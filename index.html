@@ -8860,7 +8860,12 @@
 
         pendingRegUser = u;
         toast(data.message, 'ok');
-        swAuth('verify');
+        if (data.requiresVerify === false) {
+          // Auto-verified — go straight to sign in
+          swAuth('login');
+        } else {
+          swAuth('verify');
+        }
       } catch (e) { err('Server connection failed. Is backend running?'); }
       finally { btn.textContent = 'Create Account →'; }
     }

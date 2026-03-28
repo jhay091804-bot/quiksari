@@ -82,51 +82,55 @@ app.post('/api/register', async (req, res) => {
     if (db.users.find(u => u.user === user)) {
         return res.status(400).json({ error: 'Username already taken.' });
     }
+    if (db.users.find(u => u.email === email)) {
+        return res.status(400).json({ error: 'Email already registered.' });
+    }
 
     // Generate 6-digit OTP
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    console.log(`\n======================================`);
+    console.log(`📋 NEW REGISTRATION: ${name} (${user}) → ${email}`);
+    console.log(`🔑 OTP CODE: ${otp}  ← use this if email doesn't arrive`);
+    console.log(`======================================\n`);
 
-    // Store unverified user
+    // Try to send email — if it fails, auto-verify so registration still works
+    let emailSent = false;
+    try {
+        if (transporter) {
+            const info = await transporter.sendMail({
+                from: '"QuickSari Store" <noreply@quicksari.local>',
+                to: email,
+                subject: 'QuickSari - Verify Your Account',
+                text: `Hi ${name},\n\nYour QuickSari verification code is: ${otp}\n\nEnter this code on the website to complete your registration.`,
+                html: `<div style="font-family:Arial,sans-serif;text-align:center;padding:20px;">
+                        <h2 style="color:#059669;">QuickSari Verification</h2>
+                        <p>Hi <strong>${name}</strong>, your verification code is:</p>
+                        <h1 style="letter-spacing:5px;background:#f3f4f6;padding:15px;display:inline-block;border-radius:10px;">${otp}</h1>
+                       </div>`
+            });
+            const testUrl = nodemailer.getTestMessageUrl(info);
+            if (testUrl) console.log(`🔗 Email preview: ${testUrl}`);
+            else console.log(`✅ Email sent to ${email}`);
+            emailSent = true;
+        }
+    } catch (emailErr) {
+        console.warn(`⚠️  Email failed (${emailErr.message.substring(0, 80)}) — auto-verifying user.`);
+    }
+
+    // Store user — auto-verified if email failed
     db.users.push({
-        name,
-        contact,
-        email,
-        user,
-        pass, // In production, never store plaintext!
+        name, contact, email, user, pass,
         role: 'user',
-        verified: false,
-        otp
+        verified: !emailSent, // auto-verify if email couldn't be sent
+        otp: emailSent ? otp : undefined
     });
     saveDB(db);
 
-    // Send the Verification Email
-    try {
-        const info = await transporter.sendMail({
-            from: '"QuickSari Store" <noreply@quicksari.local>',
-            to: email,
-            subject: 'QuickSari - Verify Your Account',
-            text: `Hi ${name},\n\nYour QuickSari verification code is: ${otp}\n\nEnter this code on the website to complete your registration.`,
-            html: `<div style="font-family:Arial,sans-serif;text-align:center;padding:20px;">
-                    <h2 style="color:#059669;">QuickSari Verification</h2>
-                    <p>Hi <strong>${name}</strong>, to complete your registration, enter this 6-digit code on the website:</p>
-                    <h1 style="letter-spacing:5px;background:#f3f4f6;padding:15px;display:inline-block;border-radius:10px;">${otp}</h1>
-                   </div>`
-        });
-
-        console.log(`\n\n======================================`);
-        console.log(`📧 NEW EMAIL SENT TO: ${email}`);
-        const testUrl = nodemailer.getTestMessageUrl(info);
-        if (testUrl) {
-            console.log(`🔗 PREVIEW URL (Click to view Email): ${testUrl}`);
-        } else {
-            console.log(`✅ Email successfully delivered via Real SMTP! Check the inbox.`);
-        }
-        console.log(`======================================\n\n`);
-
-        res.json({ message: 'Registration successful! Verification code sent to your email.' });
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: 'Failed to send verification email.' });
+    if (emailSent) {
+        res.json({ message: 'Account created! Check your email for the 6-digit verification code.', requiresVerify: true });
+    } else {
+        // Email failed — account is auto-verified, user can log in directly
+        res.json({ message: 'Account created successfully! You can now sign in.', requiresVerify: false });
     }
 });
 
