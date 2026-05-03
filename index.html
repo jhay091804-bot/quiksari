@@ -6988,13 +6988,23 @@
         bottom: 12px;
       }
     }
+
     /* ═══════════════ MOBILE RESPONSIVENESS (OVERRIDE) ═══════════════ */
     @media (max-width: 768px) {
+
       /* Global base */
-      html { font-size: 14px; }
-      body { cursor: auto; }
-      #qs-cursor { display: none !important; }
-      
+      html {
+        font-size: 14px;
+      }
+
+      body {
+        cursor: auto;
+      }
+
+      #qs-cursor {
+        display: none !important;
+      }
+
       /* Topbar */
       .topbar {
         padding: 8px 16px;
@@ -7003,9 +7013,20 @@
         min-height: var(--topbar);
         flex-wrap: wrap;
       }
-      .logo-name { font-size: 1.4rem; }
-      .logo-badge { width: 36px; height: 36px; }
-      .logo-tag { font-size: 0.55rem; }
+
+      .logo-name {
+        font-size: 1.4rem;
+      }
+
+      .logo-badge {
+        width: 36px;
+        height: 36px;
+      }
+
+      .logo-tag {
+        font-size: 0.55rem;
+      }
+
       .tb-right {
         overflow-x: auto;
         padding-bottom: 4px;
@@ -7013,9 +7034,18 @@
         justify-content: flex-start;
         flex-wrap: nowrap;
       }
-      .tb-right::-webkit-scrollbar { display: none; }
-      .tb-pill { padding: 8px 16px; font-size: 0.85rem; white-space: nowrap; flex-shrink: 0; }
-      
+
+      .tb-right::-webkit-scrollbar {
+        display: none;
+      }
+
+      .tb-pill {
+        padding: 8px 16px;
+        font-size: 0.85rem;
+        white-space: nowrap;
+        flex-shrink: 0;
+      }
+
       /* Hero */
       .hero {
         margin: 16px;
@@ -7023,10 +7053,30 @@
         min-height: 480px;
         padding: 24px 0;
       }
-      .slide { padding: 0 5%; flex-direction: column; justify-content: center; }
-      .slide-content { text-align: center; }
-      .slide-h { font-size: 2.8rem !important; margin-top: 20px; text-align: center; }
-      .slide-p { font-size: 1.1rem !important; text-align: center; margin-bottom: 24px; max-width: 100%; }
+
+      .slide {
+        padding: 0 5%;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      .slide-content {
+        text-align: center;
+      }
+
+      .slide-h {
+        font-size: 2.8rem !important;
+        margin-top: 20px;
+        text-align: center;
+      }
+
+      .slide-p {
+        font-size: 1.1rem !important;
+        text-align: center;
+        margin-bottom: 24px;
+        max-width: 100%;
+      }
+
       .slide-product-img {
         position: relative;
         width: 80%;
@@ -7035,39 +7085,87 @@
         right: auto !important;
         bottom: auto !important;
       }
-      .slide-btns { justify-content: center; }
-      .sarrows { padding: 0 16px; }
-      .sbtn { padding: 14px 32px; font-size: 0.95rem; }
-      
+
+      .slide-btns {
+        justify-content: center;
+      }
+
+      .sarrows {
+        padding: 0 16px;
+      }
+
+      .sbtn {
+        padding: 14px 32px;
+        font-size: 0.95rem;
+      }
+
       /* General Sections & Wrappers */
-      .sect { padding: 40px 16px !important; }
-      .feat-strip { padding: 24px 16px; gap: 16px; flex-wrap: nowrap; overflow-x: auto; }
-      .feat-i { min-width: 140px; flex-shrink: 0; }
-      
+      .sect {
+        padding: 40px 16px !important;
+      }
+
+      .feat-strip {
+        padding: 24px 16px;
+        gap: 16px;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+      }
+
+      .feat-i {
+        min-width: 140px;
+        flex-shrink: 0;
+      }
+
       /* Grids */
-      .pgrid, .cats-grid, .wallet-grid, .f-grid {
+      .pgrid,
+      .cats-grid,
+      .wallet-grid,
+      .f-grid {
         grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)) !important;
         gap: 12px;
       }
-      .cats-grid { grid-template-columns: repeat(2, 1fr) !important; }
-      .f-grid { grid-template-columns: 1fr !important; }
-      
+
+      .cats-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+      }
+
+      .f-grid {
+        grid-template-columns: 1fr !important;
+      }
+
       /* Panels and Modals */
-      .cart-panel, .wallet-panel {
+      .cart-panel,
+      .wallet-panel {
         width: 100% !important;
         max-width: 100vw !important;
       }
-      .modal-box, .checkout-box {
+
+      .modal-box,
+      .checkout-box {
         width: 95% !important;
         margin: 10px auto !important;
         padding: 24px 16px !important;
       }
-      .cart-body { padding: 16px !important; }
-      .cart-item { flex-direction: column; align-items: flex-start; }
-      .ci-img { width: 60px; height: 60px; }
-      
+
+      .cart-body {
+        padding: 16px !important;
+      }
+
+      .cart-item {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .ci-img {
+        width: 60px;
+        height: 60px;
+      }
+
       /* Bot & Fixed elements */
-      .gs-chatbot { right: 8px; bottom: 8px; }
+      .gs-chatbot {
+        right: 8px;
+        bottom: 8px;
+      }
     }
   </style>
 </head>
@@ -7583,8 +7681,7 @@
           <div class="field"><label>Password</label><input type="password" id="lPass" placeholder="••••••••"
               onkeydown="if(event.key==='Enter')doLogin()"></div>
           <button class="modal-btn mbtn-leaf" onclick="doLogin()">Sign In →</button>
-          <div class="auth-hint">Demo: <strong>user / user123</strong> &nbsp;·&nbsp; Admin: <strong>admin /
-              admin123</strong></div>
+
         </div>
         <div id="af-register" style="display:none">
           <div class="auth-err" id="regErr"></div>
